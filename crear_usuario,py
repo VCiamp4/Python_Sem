@@ -1,0 +1,18 @@
+import PySimpleGUI as psg
+
+layout = [[psg.Text(text = "Nuevo perfil", font = ("Brush Script MT", 20),
+                     size=15,expand_x = True,justification = 'left')],[psg.Text(text = "Nick o Alias: ", font = ("Brush Script MT", 15),
+                     size=15,expand_x = True,justification = 'left')], [psg.Input(key='-in-')], [psg.Text(text = "Nomber: ", font = ("Brush Script MT", 15),
+                     size=15,expand_x = True,justification = 'left')], [psg.Input(key='-in2-')], [psg.B('ok')]]
+
+window = psg.Window('crear usuario', layout, size=(1024,720))
+while True:
+   event, values = window.read()
+   print(event, values)
+   if event in (None, 'Exit'):
+      break
+   if event == 'ok':
+      print(values['-in-'])
+   
+
+window.close()
