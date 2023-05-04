@@ -1,14 +1,15 @@
 import PySimpleGUI as psg
 from PIL import Image,ImageDraw
 import io
+import json
 
 #circulo
 image = Image.new ('RGB', (10,10), color='white')
 draw = ImageDraw.Draw(image)
 draw.ellipse((0,0,10,10),fill='red')
 
-img_bytes = image.tobytes()
-circle = psg.Image(data = img_bytes, size=(10,10))
+#img_bytes = image.tobytes()
+#circle = psg.Image(data = img_bytes, size=(10,10))
 
 
 layout = [
@@ -25,35 +26,38 @@ layout = [
    [psg.Checkbox('Otro', default=False, k='otro') ],
    [psg.Text(text="Que otro", font=("Arial", 20), size=15, expand_x=True, justification='left')],
    [psg.Input(key='queOtro')],
+
    [psg.B('ok')],
-   [psg.Column([[circle]],justification = 'right',element_justification = 'center')],
+   #[psg.Column([[circle]],justification = 'right',element_justification = 'center')],
    [psg.Column([[psg.Button('Cargar imagen', size=(30,2))]], justification='right')],
-
-
 
    ]
 
-window = psg.Window('crear usuario', layout, size=(1024, 720))
+window = psg.Window('crear usuario', layout, size=(1024,720))
 while True:
    event, values = window.read()
    print(event, values)
    if event in (None, 'Exit'):
       break
+   if()
    if event == 'ok':
       datos = values
+      #print(datos)
    if event == 'Cargar imagen':
-        #esta linea abre un popup que permtie seleccionar primero la carpeta donde queremos buscar la foto
-        folder = psg.popup_get_folder('Seleccionar carpeta')
-        if folder:
-            filename = psg.popup_get_file('Seleccionar imagen', initial_folder=folder) #ahora nos permite seleccionar la foto
+            filename = psg.popup_get_file('Seleccionar imagen') #ahora nos permite seleccionar la foto
             if filename:
                 image = Image.open(filename).convert('RGB') #modificaciones a la imagen para poder ponerla en el circulo
                 image.thumbnail((50, 50)) 
                 img_buffer = io.BytesIO()
                 image.save(img_buffer, format='PNG')
                 img_bytes = img_buffer.getvalue()
-                circle.update(data=img_bytes) # modifica lo que muestra el ciruculo
+                #circle.update(data=img_bytes) # modifica lo que muestra el circulo
 window.close()
 
 
-print(datos)
+#try:
+with open('usuarios.json', 'a') as archivo:
+     json.dumps(datos, ensure_ascii=False, indent=2)
+#except:
+   # with open('usuarios.json', 'x') as archivo:
+     # json.dumps(datos, archivo, ensure_ascii=False, indent=2)
